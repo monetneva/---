@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Welcome to Your Smart Bookmark!</h2>
+
+<div id="bookBuddyPreview" style="margin-bottom:20px;"></div>
+
+<!-- Spinner and Buttons -->
+<div id="loadingSpinner" style="display:none;">
+    <p>Loading magical content...</p>
+    <div class="spinner"></div>
+</div>
+
+<h2>📚 Upload Book Image</h2>
+
+<!-- Fullscreen Loading Overlay -->
+<div id="loadingOverlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    z-index: 9999;
+    text-align: center;
+    padding-top: 20%;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    color: #E50914;
+">
+    Loading your magical content...
+    <div class="spinner" style="margin: 20px auto;"></div>
+</div>
+
+
+<form id="imageForm" style="margin-bottom:20px;">
+    <input type="file" id="imageInput" accept="image/*" required style="margin-bottom:10px;"><br>
+    <button type="submit" class="character-voice-btn">Upload and Extract Text</button>
+</form>
+
+<div id="extractedText" style="display:none;"></div>
+
+<div id="mainButtons" class="button-stack" style="display:none;">
+    <button id="aboutBtn" onclick="window.location.href='/about'">📖 About the Book</button>
+    <button id="funFactsBtn" onclick="window.location.href='/fun_facts'">💡 Fun Facts</button>
+    <button id="vocabBtn" onclick="window.location.href='/vocab'">🧠 Vocabulary</button>
+    <button id="discussionBtn" onclick="window.location.href='/discussion'">❓ Discussion</button>
+    <button id="avatarBtn" onclick="window.location.href='/avatar'">🎨 Create Book Buddy</button>
+    <button id="similarTitlesBtn" onclick="window.location.href='/similar_titles'">📚 Similar Titles</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    const savedAvatar = localStorage.getItem('savedAvatar');
+    if (savedAvatar) {
+        document.getElementById('bookBuddyPreview').innerHTML = `
+            <h4>Your Book Buddy ^.^</h4>
+            <img src="${savedAvatar}" width="80" height="80" style="border:2px solid #E50914; border-radius:8px; image-rendering:pixelated;"/>
+        `;
+    }
+
+    const contentStored = localStorage.getItem('contentEN');
+    if (!contentStored) {
+        document.getElementById('loadingSpinner').style.display = 'block';
+        await fetchContent();
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
+    document.getElementById('mainButtons').style.display = 'grid';
+});
+</script>
+
+{% endblock %}

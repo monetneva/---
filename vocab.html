@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🧠 Vocabulary</h2>
+<ul id="vocabList"></ul>
+
+<div class="readaloud-controls">
+    <select id="voiceSelect"></select>
+    <div style="margin-top:10px;">
+        <button onclick="readContent('vocab')">▶️ Play</button>
+        <button onclick="pauseSpeech()">⏸️ Pause</button>
+        <button onclick="resumeSpeech()">▶️ Resume</button>
+    </div>
+</div>
+
+<nav><a href="/">🏠 Home</a></nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const content = (localStorage.getItem('lang') === 'ES') ? JSON.parse(localStorage.getItem('contentES')) : JSON.parse(localStorage.getItem('contentEN'));
+    const vocab = content.vocab || [];
+    const list = document.getElementById('vocabList');
+
+    if (vocab.length > 0) {
+        vocab.forEach(word => {
+            const li = document.createElement('li');
+            li.innerText = word;
+            list.appendChild(li);
+        });
+    } else {
+        list.innerHTML = "<li>No vocabulary found.</li>";
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🎨 Create Your Book Buddy!</h2>
+
+<canvas id="avatarCanvas" width="320" height="320" style="border:1px solid #000;"></canvas>
+
+<div id="colorPicker">
+    <button onclick="selectColor('black')" style="background:black;"></button>
+    <button onclick="selectColor('red')" style="background:red;"></button>
+    <button onclick="selectColor('green')" style="background:green;"></button>
+    <button onclick="selectColor('blue')" style="background:blue;"></button>
+    <button onclick="selectColor('yellow')" style="background:yellow;"></button>
+    <button onclick="selectColor('white')" style="background:white;">Eraser</button>
+</div>
+
+<div id="avatarControls">
+    <button onclick="clearCanvas()">🧹 Clear</button>
+    <button onclick="saveAvatar()">💾 Save Book Buddy</button>
+</div>
+
+<div style="margin-top:20px;">
+    <button onclick="window.location.href='/'">🏠 Home</button>
+</div>
+
+<script>
+let canvas, ctx;
+let gridSize = 10;
+let cellSize = 32;
+let currentColor = "black";
+
+document.addEventListener('DOMContentLoaded', () => {
+    canvas = document.getElementById('avatarCanvas');
+    ctx = canvas.getContext('2d');
+
+    drawGridLines();
+    canvas.addEventListener('click', handleCanvasClick);
+});
+
+function drawGridLines() {
+    for (let i = 0; i <= gridSize; i++) {
+        ctx.moveTo(i * cellSize, 0);
+        ctx.lineTo(i * cellSize, canvas.height);
+        ctx.moveTo(0, i * cellSize);
+        ctx.lineTo(canvas.width, i * cellSize);
+    }
+    ctx.strokeStyle = "#ccc";
+    ctx.stroke();
+}
+
+function handleCanvasClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const col = Math.floor(x / cellSize);
+    const row = Math.floor(y / cellSize);
+
+    ctx.fillStyle = currentColor;
+    ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+    drawGridLines();
+}
+
+function selectColor(color) {
+    currentColor = color;
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGridLines();
+}
+
+function saveAvatar() {
+    const avatarData = canvas.toDataURL("image/png");
+    localStorage.setItem('savedAvatar', avatarData); // <<< Save to browser
+    alert("Book Buddy Saved!");
+}
+</script>
+
+{% endblock %}

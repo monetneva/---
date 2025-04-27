@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>❓ Discussion</h2>
+<ul id="discussionList"></ul>
+
+<div class="readaloud-controls">
+    <select id="voiceSelect"></select>
+    <div style="margin-top:10px;">
+        <button onclick="readContent('discussion')">▶️ Play</button>
+        <button onclick="pauseSpeech()">⏸️ Pause</button>
+        <button onclick="resumeSpeech()">▶️ Resume</button>
+    </div>
+</div>
+
+<nav><a href="/">🏠 Home</a></nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const content = (localStorage.getItem('lang') === 'ES') ? JSON.parse(localStorage.getItem('contentES')) : JSON.parse(localStorage.getItem('contentEN'));
+    const discussion = content.discussion || [];
+    const list = document.getElementById('discussionList');
+
+    if (discussion.length > 0) {
+        discussion.forEach(q => {
+            const li = document.createElement('li');
+            li.innerText = q;
+            list.appendChild(li);
+        });
+    } else {
+        list.innerHTML = "<li>No discussion questions available.</li>";
+    }
+});
+</script>
+
+{% endblock %}

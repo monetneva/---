@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>💡 Fun Facts</h2>
+<ul id="funFactsList"></ul>
+
+<div class="readaloud-controls">
+    <select id="voiceSelect"></select>
+    <div style="margin-top:10px;">
+        <button onclick="readContent('fun_facts')">▶️ Play</button>
+        <button onclick="pauseSpeech()">⏸️ Pause</button>
+        <button onclick="resumeSpeech()">▶️ Resume</button>
+    </div>
+</div>
+
+<nav><a href="/">🏠 Home</a></nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const content = (localStorage.getItem('lang') === 'ES') ? JSON.parse(localStorage.getItem('contentES')) : JSON.parse(localStorage.getItem('contentEN'));
+    const facts = content.fun_facts || [];
+    const list = document.getElementById('funFactsList');
+
+    if (facts.length > 0) {
+        facts.forEach(fact => {
+            const li = document.createElement('li');
+            li.innerText = fact;
+            list.appendChild(li);
+        });
+    } else {
+        list.innerHTML = "<li>No fun facts available.</li>";
+    }
+});
+</script>
+
+{% endblock %}

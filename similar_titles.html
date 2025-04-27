@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📚 Similar Titles</h2>
+<ul id="similarTitlesList"></ul>
+
+<div class="readaloud-controls">
+  <select id="voiceSelect"></select>
+  <div style="margin-top:10px;">
+      <button onclick="readContent('similar_titles')">▶️ Play</button>
+      <button onclick="pauseSpeech()">⏸️ Pause</button>
+      <button onclick="resumeSpeech()">▶️ Resume</button>
+  </div>
+</div>
+
+<nav><a href="/">🏠 Home</a></nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const content = (localStorage.getItem('lang') === 'ES') ? JSON.parse(localStorage.getItem('contentES')) : JSON.parse(localStorage.getItem('contentEN'));
+    const titles = content.similar_titles || [];
+    const list = document.getElementById('similarTitlesList');
+
+    if (titles.length > 0) {
+        titles.forEach(t => {
+            const li = document.createElement('li');
+            li.innerText = t;
+            list.appendChild(li);
+        });
+    } else {
+        list.innerHTML = "<li>No similar titles found.</li>";
+    }
+});
+</script>
+
+{% endblock %}

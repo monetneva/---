@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📖 About the Book</h2>
+<div id="aboutContent"></div>
+
+<div class="readaloud-controls">
+    <select id="voiceSelect"></select>
+    <div style="margin-top:10px;">
+        <button onclick="readContent('about')">▶️ Play</button>
+        <button onclick="pauseSpeech()">⏸️ Pause</button>
+        <button onclick="resumeSpeech()">▶️ Resume</button>
+    </div>
+</div>
+
+<nav><a href="/">🏠 Home</a></nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const content = (localStorage.getItem('lang') === 'ES') ? JSON.parse(localStorage.getItem('contentES')) : JSON.parse(localStorage.getItem('contentEN'));
+    document.getElementById('aboutContent').innerText = content.about || "No about content available.";
+});
+</script>
+
+{% endblock %}
